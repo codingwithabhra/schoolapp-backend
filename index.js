@@ -43,6 +43,27 @@ app.post("/students", async (req, res) => {
     }
 });
 
+//find student by id
+app.get("/students/:id", async (req, res) => {
+    const studentId = req.params.id;
+
+    try {
+        const findStudent = await Student.findById(
+            studentId,
+            { new: true },
+        );
+
+        if (!findStudent) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+        res.status(200).json(findStudent);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    };
+});
+
 app.post("/students/:id", async (req, res) => {
     const studentId = req.params.id;
     const updatedStudentData = req.body;
@@ -69,7 +90,7 @@ app.delete("/students/:id", async (req, res) => {
     const studentId = req.params.id;
 
     try {
-        const deletedStudent = await Student.findByIdAndRemove(studentId);
+        const deletedStudent = await Student.findByIdAndDelete(studentId);
 
         if (!deletedStudent) {
             return res.status(404).json({ error: "Student not found" });
