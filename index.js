@@ -48,10 +48,7 @@ app.get("/students/:id", async (req, res) => {
     const studentId = req.params.id;
 
     try {
-        const findStudent = await Student.findById(
-            studentId,
-            { new: true },
-        );
+        const findStudent = await Student.findById(studentId);
 
         if (!findStudent) {
             return res.status(404).json({ message: "Student not found" });
